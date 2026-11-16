@@ -1,0 +1,36 @@
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+
+proxies:
+  - name: "cloady-xray"
+    type: vless
+    server: dockerfile-ardpgdka-workspace-djbs4i.cloady.io
+    port: 443
+    uuid: 86034433-262a-4bd7-a803-08557cd9d069
+    alterId: 0
+    cipher: auto
+    tls: true
+    servername: dockerfile-ardpgdka-workspace-djbs4i.cloady.io
+    network: ws
+    ws-opts:
+      path: /vless-ws
+      headers:
+        Host: dockerfile-ardpgdka-workspace-djbs4i.cloady.io
+    udp: true
+
+proxy-groups:
+  - name: "节点选择"
+    type: select
+    proxies:
+      - cloady-xray
+  - name: "自动选择"
+    type: url-test
+    proxies:
+      - cloady-xray
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+
+rules:
+  - MATCH,节点选择
